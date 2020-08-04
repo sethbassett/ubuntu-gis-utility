@@ -25,11 +25,12 @@ mkdir -- "$LOGPATH"
 
 source "$GIS_UTILS_DIR/init/init_docean.sh"
 
-# Build GEOS-PROJ-GDAL-POSTGIS from Source
-source "$GIS_UTILS_DIR/make/make-pg-11-postgis-3.sh"
+# Install default binaries
+source "$GIS_UTILS_DIR/apt/apt-pg-11-postgis-3.sh"
 
-# Install default packages
-# source "$GIS_UTILS_DIR/apt/apt-pg-11-postgis-3.sh"
+# Build GEOS-PROJ-GDAL-POSTGIS binaries from Source
+# source "$GIS_UTILS_DIR/make/make-pg-11-postgis-3.sh"
+
 
 
 
