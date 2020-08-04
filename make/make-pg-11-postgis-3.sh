@@ -147,6 +147,7 @@ sudo -u postgres createuser --superuser root
 ##############################################################################
 #####  MAKE GEOS #############################################################
 ##############################################################################
+cd -- "$SRCPATH"
 wget "$GEOSURL/$GEOSFILE"
 bzip2 -d geos-3.8.1.tar.bz2  
 tar -xf "/$SRCPATH/${GEOSFILE%.bz2}"
@@ -203,7 +204,7 @@ make install | tee "$LOGPATH/proj.install.log"
 # GDAL Docker Page
 # https://github.com/OSGeo/gdal/tree/master/gdal/docker
 ##############################################################################
-
+cd -- "$SRCPATH"
 wget "$GDALURL/$GDALFILE"
 tar -xzvf "$SRCPATH/$GDALFILE"
 
@@ -227,12 +228,13 @@ echo 'export GDAL_DATA=$BUILDPATH/share/gdal' >> ~/.bash_profile
 cd -- "/$SRCPATH"
 
 sudo apt install -y libjson-c-dev
-
-
 git clone https://github.com/json-c/json-c.git
+
 mkdir json-c-build
 cd -- "json-c-build"
+
 cmake ../json-c   # See CMake section below for custom arguments
+
 make -j $NJOBS | tee "$LOGPATH/json-c.make.log"
 make check | tee "$LOGPATH/json-c.check.log"
 make install | tee "$LOGPATH/json-c.install.log"
