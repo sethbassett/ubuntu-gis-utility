@@ -26,13 +26,13 @@ Build time of example.sh on 2020-08-05 was 94m46.688s on a 4 core droplet.
 # Contents  
 ```  
 ubuntu-gis-utility/  
-  | example.sh  : example meta script  
-  | init/       : configuring and updating linux VMs after first boot  
-  | apt/        : installing binary distributions  
-  | make/       : compiling software from source  
-  | config/     : post-installation configuration of software  
-    | conf/     : environment and conf files for software  
-  | postgis/    : postgis specific scripts  
+  | example.sh         : example meta script  
+  | init/              : configure VM for cloud environment
+  | pg-11-postgis-3/   : PostgreSQL 11, postgis 3
+    | conf/            : PostgreSQL configuration templates
+  | r-shiny/           : R and Shiny-Server
+    | conf/            : Postgis configuration templates
+  | postgis-utility/   : PostGIS post install utilities
 ```  
   
 # Customization  
