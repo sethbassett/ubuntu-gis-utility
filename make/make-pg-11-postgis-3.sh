@@ -41,8 +41,8 @@ POSTURL=https://download.osgeo.org/postgis/source
   echo "SRCPATH WAS ALREADY SET TO $SRCPATH"
 
 mkdir -- "$SRCPATH"
-sudo chown $USER "$SRCPATH"
-sudo chmod u+rwx "$SRCPATH"
+chown $USER "$SRCPATH"
+chmod u+rwx "$SRCPATH"
 
 [[ -z "$BUILDPATH" ]] && \
   BUILDPATH=/usr/local || \
@@ -120,6 +120,10 @@ apt install -y \
   libarmadillo9 libpython3.8 libopenexr24 libheif1 \
   python-is-python3
   
+# POSTGIS compile time dependencies
+apt install -y \
+  xsltproc xmlto
+
 ##############################################################################
 ##############################################################################
 ##############################################################################
@@ -129,16 +133,16 @@ apt install -y \
 #####  INSTALL POSTGRESQL ####################################################
 ##############################################################################
 # ADD APT REPOSITORY
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main" >> /etc/apt/sources.list'
-wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main" >> /etc/apt/sources.list'
+wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
 
 apt update
 
 # install postgresql and create superuser
 # do NOT install proj, geos, gdal, or postgis
-sudo apt install -y postgresql-11 postgresql-server-dev-11 postgresql-client-11
-sudo apt install -y libpq-dev libxml2-dev libxml2-utils
-sudo -u postgres createuser --superuser root
+apt install -y postgresql-11 postgresql-server-dev-11 postgresql-client-11
+apt install -y libpq-dev libxml2-dev libxml2-utils
+-u postgres createuser --superuser root
 ##############################################################################
 ##############################################################################
 ##############################################################################
@@ -227,7 +231,7 @@ echo 'export GDAL_DATA=$BUILDPATH/share/gdal' >> ~/.bash_profile
 ##############################################################################
 cd -- "/$SRCPATH"
 
-sudo apt install -y libjson-c-dev
+apt install -y libjson-c-dev
 git clone https://github.com/json-c/json-c.git
 
 mkdir json-c-build
@@ -248,9 +252,6 @@ make install | tee "$LOGPATH/json-c.install.log"
 #####  MAKE POSTGIS  #########################################################
 ##############################################################################
 cd -- "/$SRCPATH"
-sudo apt install -y xsltproc xmlto
-sudo apt install -y libcunit1 libcunit1-dev
-
 wget "$POSTURL/$POSTFILE" -O "/$SRCPATH/$POSTFILE"
 tar -xzvf "/$SRCPATH/$POSTFILE"
 
@@ -265,7 +266,7 @@ make install | tee "$LOGPATH/postgis.install.log"
 cd -- "$SRCPATH"
 
 #OGR_FDW Support
-sudo apt install -y postgresql-11-ogr-fdw
+apt install -y postgresql-11-ogr-fdw
 ##############################################################################
 ##############################################################################
 ##############################################################################
