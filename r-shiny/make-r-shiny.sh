@@ -74,7 +74,7 @@ cd -- "$SRCPATH"
 
 wget ftp://ftp.pcre.org/pub/pcre/pcre2-10.35.tar.gz
 tar -xzvf pcre2-10.35.tar.gz
-cd -- "pcre2-10.35.tar.gz"
+cd -- "pcre2-10.35"
 
 ./configure
 make
@@ -105,7 +105,7 @@ make check
 make install
 
 # necessary? I don't know
-# sudo ln -s /opt/R/$RVERS/bin/R /bin/R 
+sudo ln -s /usr/local/bin/R /bin/R 
 ##############################################################################
 ##############################################################################
 ##############################################################################
