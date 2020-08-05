@@ -24,7 +24,7 @@ Build time of example.sh on 2020-08-05 was 94m46.688s on a 4 core droplet.
 
 
 # Contents  
-  
+```  
 ubuntu-gis-utility/  
   | example.sh  : example meta script  
   | init/       : configuring and updating linux VMs after first boot  
@@ -33,6 +33,7 @@ ubuntu-gis-utility/
   | config/     : post-installation configuration of software  
     | conf/     : environment and conf files for software  
   | postgis/    : postgis specific scripts  
+```  
   
 # Customization  
   
