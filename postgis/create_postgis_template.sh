@@ -28,7 +28,7 @@ done
 
 
 ##### Main Code ##############################################
-psql postgres -c "CREATE DATABASE $DATABASE;" 
+psql postgres -c "CREATE DATABASE $DATABASE WITH OWNER postgres;" 
 
 psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 
