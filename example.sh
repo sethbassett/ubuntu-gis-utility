@@ -48,8 +48,8 @@ source "$GIS_UTILS_DIR/postgis/create_postgis_template.sh"
 
 ### STEP 5: (REQUIRED) modify your password for postgresql login like so
 echo "Before you go don't forget to add a superuser account on the postgres server!"
-echo ""
-echo "Example:  sudo -u postgres createuser -s my_name_here --interactive"
+echo "Example:"
+echo "  sudo -u postgres createuser -s my_name_here --interactive"
 
 
 
