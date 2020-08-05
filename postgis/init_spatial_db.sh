@@ -11,7 +11,7 @@ ADDSTD=1
 ##############################################################
 
 ##### Args ###################################################
-while getopts dtrao option
+while getopts dtraogz option
 do
   case "${option}"
   in
