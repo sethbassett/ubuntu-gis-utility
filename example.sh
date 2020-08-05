@@ -53,7 +53,7 @@ echo "  sudo -u postgres createuser -s -P my_name_here"
 source "$GIS_UTILS_DIR/r-shiny/make-r-shiny.sh"
 source "$GIS_UTILS_DIR/r-shiny/config-r-shiny.sh"
 
-# add additional R packages you use as standard
+# install your favorite R packages
 source "$GIS_UTILS_DIR/r-shiny/config-r-packages.sh"
 
 

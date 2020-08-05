@@ -74,7 +74,7 @@ cd -- "$SRCPATH"
 
 wget ftp://ftp.pcre.org/pub/pcre/pcre2-10.35.tar.gz
 tar -xzvf pcre2-10.35.tar.gz
-cd -- "pcre2-10.35.tar.gz"
+cd -- "pcre2-10.35"
 
 ./configure
 make
