@@ -12,7 +12,7 @@ apt update
 # do NOT install proj, geos, gdal, or postgis
 apt install -y postgresql-11 postgresql-server-dev-11 postgresql-client-11
 apt install -y libpq-dev libxml2-dev libxml2-utils
-apt install postgresql-11-ogr-fdw
+apt install -t postgresql-11-ogr-fdw
 sudo -u postgres createuser --superuser root
 ##############################################################################
 ##############################################################################
