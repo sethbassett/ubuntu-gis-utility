@@ -14,10 +14,10 @@ Create a fresh Digital Ocean droplet running Ubuntu 18.04 and ssh into the shell
 git clone https://github.com/sethbassett/ubuntu-gis-utility
 
 # Never do this unless the repo is trustworthy. Am I trustworthy?
-chmod -R +x ubuntu-gis-utils/
+chmod -R +x ubuntu-gis-utility/
 
 # for build time: time source ubuntu-gis-utils/example.sh
-source ubuntu-gis-utils/example.sh
+source ubuntu-gis-utility/example.sh
 ```  
 
 Build time of example.sh on 2020-08-05 was 94m46.688s on a 4 core droplet.
