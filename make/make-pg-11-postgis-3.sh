@@ -142,7 +142,7 @@ apt update
 # do NOT install proj, geos, gdal, or postgis
 apt install -y postgresql-11 postgresql-server-dev-11 postgresql-client-11
 apt install -y libpq-dev libxml2-dev libxml2-utils
--u postgres createuser --superuser root
+sudo -u postgres createuser -s root
 ##############################################################################
 ##############################################################################
 ##############################################################################
