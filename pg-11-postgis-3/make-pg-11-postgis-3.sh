@@ -4,6 +4,7 @@
 
 echo "START make-pg-11-postgis-3"
 
+
 ##############################################################################
 ##### SOFTWARE SOURCES #######################################################
 ##############################################################################
@@ -36,6 +37,13 @@ POSTURL=https://download.osgeo.org/postgis/source
 ##############################################################################
 ##### CHECK ENVIORNMENT VARIABLES#############################################
 ##############################################################################
+
+# get root location of this script
+GIS_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# this checks to see if necessary environment variables have been set in the shell
+# if not, then it sets them
+
 [[ -z "$SRCPATH" ]] && \
   SRCPATH=/usr/local/scr || \
   echo "SRCPATH WAS ALREADY SET TO $SRCPATH"
@@ -48,10 +56,7 @@ chmod u+rwx "$SRCPATH"
   BUILDPATH=/usr/local || \
   echo "BUILDPATH WAS ALREADY SET TO $BUILDPATH"
 
-[[ -z "$LOGPATH" ]] && \
-  LOGPATH="$GIS_UTILS_DIR/sh_logs" || \
-  echo "LOGPATH WAS ALREADY SET TO $BUILDPATH"
-
+LOGPATH="$GIS_UTILS_DIR/shlogs"
 mkdir -- "$LOGPATH"
 
 [[ -z "$NJOBS" ]] && \
@@ -121,6 +126,9 @@ apt install -y \
   libarmadillo9 libpython3.8 libopenexr24 libheif1 \
   python-is-python3
   
+# jason-c compile time dependencies
+apt install -y libjson-c-dev
+
 # POSTGIS compile time dependencies
 apt install -y \
   xsltproc xmlto
@@ -154,16 +162,20 @@ sudo -u postgres createuser -s root
 ##############################################################################
 #####  MAKE GEOS #############################################################
 ##############################################################################
+echo "Making ${GEOSFILE%.tar.bz2} FROM $GEOSURL" 
+
 cd -- "$SRCPATH"
 wget "$GEOSURL/$GEOSFILE"
 bzip2 -d geos-3.8.1.tar.bz2  
 tar -xf "/$SRCPATH/${GEOSFILE%.bz2}"
 
 cd -- "/$SRCPATH/${GEOSFILE%.tar.bz2}"
+
+echo "Compiling ${GEOSFILE%.tar.bz2}"
 ./configure 
-make -j $NJOBS | tee "$HOME/$LOGPATH/geos.make.log"
-make check | tee "$HOME/$LOGPATH/geos.check.log"
-make install | tee "$HOME/$LOGPATH/geos.install.log"
+make -j $NJOBS > "$LOGPATH/geos.make.stdout" 2> "$LOGPATH/geos.make.stderr"
+make check > "$LOGPATH/geos.check.stdout" 2> "$LOGPATH/geos.make.stderr"
+make install > "$LOGPATH/geos.install.stdout" 2> "$LOGPATH/geos.install.stderr"
 cd -- "$SRCPATH"
 ##############################################################################
 ##############################################################################
@@ -174,6 +186,8 @@ cd -- "$SRCPATH"
 ##############################################################################
 #####  MAKE PROJ  ############################################################
 ##############################################################################
+echo "Making ${PROJFILE%.tar.gz} from $PROJURL" 
+
 cd -- "$SRCPATH"
 
 wget "$PROJURL/$PROJFILE"
@@ -185,9 +199,9 @@ cd -- "/$SRCPATH/${PROJFILE%.tar.gz}"
 
 ./configure
 
-make -j $NJOBS | tee "$LOGPATH/proj.make.log"
-make check | tee "$LOGPATH/proj.check.log"
-make install | tee "$LOGPATH/proj.install.log"
+make -j $NJOBS > "$LOGPATH/proj.make.stdout" 2> "$LOGPATH/proj.make.stderr"
+make check > "$LOGPATH/proj.check.stdout" 2> "$LOGPATH/proj.check.stderr"
+make install > "$LOGPATH/proj.install.stdout" 2> "$LOGPATH/proj.install.stderr"
 ##############################################################################
 ##############################################################################
 ##############################################################################
@@ -211,6 +225,7 @@ make install | tee "$LOGPATH/proj.install.log"
 # GDAL Docker Page
 # https://github.com/OSGeo/gdal/tree/master/gdal/docker
 ##############################################################################
+echo "Making ${GDALFILE%.tar.gz} from $GDALURL" 
 cd -- "$SRCPATH"
 wget "$GDALURL/$GDALFILE"
 tar -xzvf "$SRCPATH/$GDALFILE"
@@ -233,9 +248,9 @@ source ~/.bash_profile
 ##############################################################################
 #####  MAKE JSON-C  #########################################################
 ##############################################################################
+echo "Making json-c from https://github.com/json-c/json-c.git" 
 cd -- "/$SRCPATH"
 
-apt install -y libjson-c-dev
 git clone https://github.com/json-c/json-c.git
 
 mkdir json-c-build
@@ -243,9 +258,9 @@ cd -- "json-c-build"
 
 cmake ../json-c   # See CMake section below for custom arguments
 
-make -j $NJOBS | tee "$LOGPATH/json-c.make.log"
-make check | tee "$LOGPATH/json-c.check.log"
-make install | tee "$LOGPATH/json-c.install.log"
+make -j $NJOBS > "$LOGPATH/json-c.make.stdout" 2> "$LOGPATH/json-c.make.stderr"
+make check > "$LOGPATH/json-c.check.stdout" 2> "$LOGPATH/json-c.check.stderr"
+make install > "$LOGPATH/json-c.install.stdout" 2> "$LOGPATH/json-c.install.stderr"
 ##############################################################################
 ##############################################################################
 ##############################################################################
@@ -255,6 +270,8 @@ make install | tee "$LOGPATH/json-c.install.log"
 ##############################################################################
 #####  MAKE POSTGIS  #########################################################
 ##############################################################################
+echo "Making ${POSTFILE%.tar.gz} from $POSTURL"
+
 cd -- "/$SRCPATH"
 wget "$POSTURL/$POSTFILE" -O "/$SRCPATH/$POSTFILE"
 tar -xzvf "/$SRCPATH/$POSTFILE"
@@ -264,9 +281,9 @@ LDFLAGS=-lstdc++ ./configure \
    --with-raster \
    --with-gdalconfig=/usr/local/bin/gdal-config
 
-make -j $NJOBS | tee "$LOGPATH/postgis.make.log"
-make check | tee "$LOGPATH/postgis.check.log"
-make install | tee "$LOGPATH/postgis.install.log"
+make -j $NJOBS > "$LOGPATH/postgis.make.stdout" 2> "$LOGPATH/postgis.make.stderr"
+make check > "$LOGPATH/postgis.check.stdout" 2> "$LOGPATH/postgis.check.stderr"
+make install > "$LOGPATH/postgis.install.stdout" 2> "$LOGPATH/postgis.install.stderr"
 cd -- "$SRCPATH"
 
 #OGR_FDW Support

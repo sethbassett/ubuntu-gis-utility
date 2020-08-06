@@ -104,7 +104,8 @@ make -j $NJOBS
 make check 
 make install
 
-# necessary? I don't know
+# necessary for some programs to find R
+# symlinks /bin/R to point to /usr/local/bin/R
 sudo ln -s /usr/local/bin/R /bin/R 
 ##############################################################################
 ##############################################################################
@@ -114,9 +115,6 @@ sudo ln -s /usr/local/bin/R /bin/R
 ##############################################################################
 ####  INSTALL R PACKAGES FIRST ###############################################
 ##############################################################################
-# required for devtools
-apt install libssl-dev
-
 sudo su - \
 -c "R -e \"install.packages(c('shiny','rmarkdown'), repos='https://cran.rstudio.com/')\""
 ##############################################################################
