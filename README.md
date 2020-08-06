@@ -36,27 +36,27 @@ source ubuntu-gis-utility/apt-example.sh
 
 (Note this will set up a user named "gis" with the same ssh keys as root; you will be asked for a sudoer password when you log in as the user).
 
-## Using apt-*.sh vs make-*.sh
+## Using apt-\*.sh vs make-\*.sh
 
 Alternately, you can use ```source ubuntu-gis-utility/make-example.sh``` to compile GEOS, PROJ, GDAL, and PostGIS from source.  
   
 Using apt fetches precompiled binaries for your ubuntu distribution. This has some advantages - it's relatively quick and relatively robust. The disadvantage is that the official precompiled binaries in the official repositories can be months or years behind the current versions of the software you wanted.  
 
-Using make to compile a piece of software from source takes significantly longer and is more prone to breakage - but it has some definite advantages, particularly for PostGIS. By compiling PostGIS and its major dependencies (GEOS/PROJ/GDAL) yourself, PostGIS will be using GEOS 3.8.1, PROJ 6.3.2, and GDAL 3.1.2 for its backend libraries. This means that PostGIS will offer you more functionality and better optimization than the default binaries you get from apt.  
+Using make to compile a piece of software from source takes significantly longer and is more prone to breakage - but it has some definite advantages, particularly for PostGIS. By compiling PostGIS and its major dependencies yourself, PostGIS will use GEOS 3.8.1, PROJ 6.3.2, and GDAL 3.1.2 for its backend libraries. This is significantly ahead of the official binaries at the time of writing this readme (2020-08-06). This means that PostGIS will offer you more functionality and better optimization than the default binaries you get from apt.  
 
 Note that if you compile GDAL and GEOS from source and plan on using R's *sf* package on the same machine, you'll need to compile R from source as well - otherwise *sf* won't recognize the update versions of GDAL and GEOS you have compiled.
 
 # WARNING!
 
-The config script for PostgreSQL/PostGIS alters the pg_hba.conf file to accept all incoming connections, modifies the postgresql.conf file to listen for all incoming connections, and uses UFW to open port 5432 to all connections.  
+The config-pg-11-postgis-3.sh script for PostgreSQL/PostGIS alters the pg_hba.conf file to accept all incoming connections, modifies the postgresql.conf file to listen for all incoming connections, and uses UFW to open port 5432 to all connections.  
 
-The Shiny-Server config-r-shiny.sh script alters the Shiny-Server.conf file to change to Shiny-Server port to the standard HTTP port (port 80) and uses UFW to open port 80 to all connections.  
+The config-r-shiny.sh script for Shiny-Server alters the Shiny-Server.conf file and changes the Shiny-Server port to the standard HTTP port (port 80) and uses UFW to open port 80 to all connections.  
 
-**BY DESIGN THIS WILL LEAVE YOUR NEW VM WITH NO NETWORKING SECURITY POLICY AT THE SYSTEMS LEVEL**  
+**THIS MEANS YOUR VM WILL ACCEPT ALL INCOMING CONNECTIONS ON THE RELEVANT PORTS (5432 & 80) BY DESIGN**  
   
-This works well with AWS and Azure, where your network security policy will be handled via AWS' Virtual Private Cloud (VPC) or Azure's Azure Private Cloud (APC) network security toolsets.  
+This works well with AWS and Azure, where your network security policy should be set via AWS' Virtual Private Cloud (VPC) or Azure's Azure Private Cloud (APC) network security toolsets.  
  
-If you are deploying to Digital Ocean, however, this is problematic. Digital Ocean expects you to handle your network security at the systems level and only allows gives you the ability to limit connections to your machine to IP addresses within the same Digital Ocean data center.  
+If you are deploying to Digital Ocean, however, this policy is problematic. Digital Ocean expects you to handle your network security at the systems level and only only gives you the ability to limit connections to your machine to IP addresses within the same Digital Ocean data center.  
 
 If you are deploying on digital ocean, you should modify the ```ufw allow (PORT)``` commands in the relevant config-*.sh scripts to read something like ```ufw allow (PORT) from xx.xx.xx.xx```, where xx.xx.xx.xx is the IP address or block you want to whitelist to connect to your VM. 
  
