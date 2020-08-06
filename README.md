@@ -10,7 +10,8 @@ By design, the networking security policy will be set to allow all incoming conn
 # Contents  
 ```  
 ubuntu-gis-utility/  
-  | example.sh         : example meta script  
+  | apt-example.sh     : example wrapper script for installing standard binaries  
+  | make-example.sh    : example wrapper for installing from source  
   | init/              : configure VM for cloud environment
   | pg-11-postgis-3/   : PostgreSQL 11, postgis 3
     | conf/            : PostgreSQL configuration templates
@@ -50,9 +51,9 @@ Note that if you compile GDAL and GEOS from source and plan on using R's *sf* pa
 
 **BY DESIGN, AN INSTANCE CONFIGURED WITH THESE SCRIPTS WILL ACCEPT ALL INCOMING CONNECTIONS ON PORTS 22, 873 AND ON ANY OF THE RELEVANT PORTS USED BY THE SOFTWARE YOU INSTALL. TRAFFIC TO ALL OTHER PORTS WILL BE REJECTED**  
 
-This is very much a compromise solution that is sandwiched between 'best practices' and 'getting shit done in a way that won't bite you in the future.'
+This is very much a compromise solution that is sandwiched between 'best practices' and 'getting shit done in a way that won't bite a novice in the future.'
   
-Cloud based environments like AWS, Azure and Digital Ocean expect you to handle your network security policy via their own set of high level tools:  
+Cloud based environments like AWS, Azure and Digital Ocean expect you to handle your network security policy via their own set of high-level tools:  
   + AWS' Virtual Private Cloud (VPC)  
   + Azure's Azure Private Cloud (APC)  
   + Or Digital Ocean's Virtual Private Cloud (VPC)  
@@ -63,9 +64,9 @@ However, the whole idea behind this set of utilities is that they let you skip t
 
 The compromise solution is to assume the average GIS professional knows nothing about managing network security policy. The default security policy that I implemented is to enable UFW and open ports 22 and 873 so you can use ssh and rsync right off the bat. All other ports are only whitelisted when you call the relevant config-\*.sh script after installing a particular piece of software.  
   
-This is a reasonably safe compromise for a novice user - not perfect, but at least the VM won't be accepting all incoming connections on all ports if you don't know how to set up a VPC/APC security policy.  
+This is a reasonably safe compromise for a novice user - not perfect, but at least the VM won't be accepting all incoming connections on all ports if you don't know how to set up a VPC/APC security policy. If you manually install additional software on top of these scripts, you will need to add the relevant ports to UFW yourself.  
 
-If you do know how to use a VPC/APC security policy, then you simply need to add in ```ufw disable``` as the last bash command at the end of your wrapper script.  
+If you do know how to use a VPC/APC security policy, my apologies. Simply add in ```ufw disable``` as your final bash command and move on.  
 
 ## How config-\*.sh scripts modify the network settings  
 
