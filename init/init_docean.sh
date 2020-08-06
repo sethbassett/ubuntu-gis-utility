@@ -22,19 +22,27 @@ COPY_AUTHORIZED_KEYS_FROM_ROOT=true
 OTHER_PUBLIC_KEYS_TO_ADD=(
 )
 
+# directoy of where this script ran from
+INIT_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# where to write logs to
+LOGPATH="$INIT_UTILS_DIR/shlogs"
+mkdir -- "$LOGPATH"
+
+
 ##############################################################################
 ##### update/upgrade os after first boot #####################################
 ##############################################################################
-
-sudo apt update -y 
+echo "Performing intial update of OS"
+apt update -y > /dev/null 2>&1
 
 ##### Below Prevents issue with GRUB prompt when running this script ###########
 # Digital Ocean | Ubuntu 18.04.4 LTS
 # https://www.digitalocean.com/community/questions/ubuntu-new-boot-grub-menu-lst-after-apt-get-upgrade?answer=45153
 
-sudo rm /boot/grub/menu.lst
-sudo update-grub-legacy-ec2 -y
-sudo apt upgrade -y
+rm /boot/grub/menu.lst
+sudo update-grub-legacy-ec2 -y > /dev/null 2>&1
+apt upgrade -y > "$LOGPATH/apt.log" 2>&1
 ##############################################################################
 ##############################################################################
 
@@ -42,6 +50,8 @@ sudo apt upgrade -y
 ##############################################################################
 ##### create sudoer user #####################################################
 ##############################################################################
+echo "Creating sudoer user $USERNAME"
+
 # Add sudo user and grant privileges
 useradd --create-home --shell "/bin/bash" --groups sudo "${USERNAME}"
 

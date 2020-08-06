@@ -4,7 +4,7 @@ A set of shell scripts for setting up and configuring FOSS-GIS in a cloud enviro
   
 These are the scripts I use to automate setting up a FOSS-GIS resource in the cloud. They also serve as my private library of well commented reference scripts that detail both the general process and the specific steps needed to set up each piece of software on Linux 18.04.  
 
-By design, the networking security policy will be set to allow all incoming connections - see WARNING section below for more details.  
+By design, the networking security policy will be set to enable UFW and allow all incoming connections on ports 22 and 873 and deny all others - see WARNING section below for more details.    
 
 
 # Contents  
