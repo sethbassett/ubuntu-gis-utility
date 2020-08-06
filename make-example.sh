@@ -6,6 +6,9 @@ GIS_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )
 
 ##############################################################################
 ##### SET SCRIPT VARIABLES ###################################################
+
+# These are only necessary for making software, not for downloading from apt
+
 # Path to Unpack Source
 SRCPATH=/usr/local/src
 mkdir -- "$SRCPATH"
@@ -47,7 +50,7 @@ echo "  sudo -u postgres createuser -s -P my_name_here"
 
 ### Additional software installations
 
-# These follow the same install/make then config process
+# These follow the same apt/make --> config process
 # R compiles all its packages at install time
 # Compiling R and then having R compile its internal packages can take a while
 source "$GIS_UTILS_DIR/r-shiny/make-r-shiny.sh"
