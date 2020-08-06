@@ -87,12 +87,16 @@ Note these settings are not 'best practices' - they are designed to get you up a
 # Customization  
 
 Customization is fairly straight forward. Pick and choose your scripts as needed and wrap them in your own bash script. The process chain is always the same:  
-  1. source the init-*.sh for your cloud provider  
+  1. source the init-*.sh for your cloud provider. This updates the OS on your VM to the latest version before you begin to install software on top of it.  
   2. source **one of** make-*.sh or apt-*.sh (but not both) for the software you want  
   3. (optional) source config-*.sh for the software if you want to alter the default configuration  
   4. (optional) source any additional utility scripts  
+
+## Example Wrapper  
+ 
+Putting it all together, say you want to intall R 4.x and Shiny-Server, but leave Shiny-Server in its default configuration.  
   
-If you want to intall R 4.x and Shiny-Server but leave Shiny-Server in its default configuration, you would save the following as myscript.sh:  
+In this case, you would save the following bash script as myscript.sh:  
 ```  
 #!/bin/bash
 
@@ -109,7 +113,7 @@ source "$GIS_UTILS_DIR/r-shiny/apt-r-shiny.sh"
 ufw allow 3838
 ```
 
-Then ```chmod +x myscript.sh`` and ```source myscript.sh``` and you're off to the races. 
+Next ```chmod +x myscript.sh`` in the terminal to allow the shell to execute it, then ```source myscript.sh``` and you're off to the races. 
 
   
 
