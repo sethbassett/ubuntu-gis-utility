@@ -22,7 +22,14 @@ source ubuntu-gis-utility/example.sh
 
 Build time of example.sh on 2020-08-05 was 94m46.688s on a 4 core droplet.
 
+# WARNING  
 
+The config script for PostGIS (port 5432) leaves the machine open to all connections. The Shiny-Server config moves the Shiny-Server port to the standard HTTP port (port 80) and leaves the machines wide open to all connections.
+
+**THIS IS BY DESIGN** This policy works well with AWS and Azure, where your network security will be handled at a higher level via the VPC (AWS) or APC (Azure) tools. It works less well on Digital Ocean, who only gives you the option to limit networking to machines within their data center; they expect you to know enough to handle your own security policies at the systems level.  
+
+Either way, you should modify the ```UFW Allow``` 
+ 
 # Contents  
 ```  
 ubuntu-gis-utility/  
