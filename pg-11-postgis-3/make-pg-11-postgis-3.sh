@@ -170,12 +170,12 @@ apt update  > /dev/null 2>&1
 apt install -y \
   postgresql-11 \
   postgresql-server-dev-11 \
-  postgresql-client-11 > "$LOGPATH/apt.log" 2>&1
+  postgresql-client-11 >> "$LOGPATH/apt.log" 2>&1
 
 apt install -y \
   libpq-dev \
   libxml2-dev \
-  libxml2-utils > "$LOGPATH/apt.log" 2>&1
+  libxml2-utils >> "$LOGPATH/apt.log" 2>&1
 
 # add user for digital ocean root
 sudo -u postgres createuser -s root
