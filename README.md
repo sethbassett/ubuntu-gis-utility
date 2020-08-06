@@ -36,5 +36,35 @@ ubuntu-gis-utility/
 ```  
   
 # Customization  
+
+Pick and choose your scripts as needed and wrap them in your own shell script. The process chain is always  
+```  
+init.sh
+make.sh or apt.sh (but not both) 
+config.sh  
+```  
+
+So to configure a machine with PostgreSQL 11 and PostGIS 3 from the pre-compiled binaries in the PostgreSQL repository, it would look like this:
+
+```
+#!/bin/bash
+
+# get root location of sript
+GIS_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+### STEP 1: Cloud Configuration VM
+source "$GIS_UTILS_DIR/init/init_docean.sh"
+
+### STEP 2: Use apt-*.sh for precompiled binaries
+source "$GIS_UTILS_DIR/pg-11-postgis-3/apt-pg-11-postgis-3.sh"
+
+### STEP 3: Config Software
+source "$GIS_UTILS_DIR/pg-11-postgis-3/config-pg-11-postgis-3.sh"
+
+```
+
+
+
+
   
 
