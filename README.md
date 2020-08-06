@@ -44,7 +44,7 @@ make.sh or apt.sh (but not both)
 config.sh  
 ```  
 
-So to configure a machine with R 4.0 installed as a binary from the CRAN repository, followed by Shiny-Server (but no PostgreSQL/PostGIS), it would look like this:
+So to configure a machine with PostgreSQL 11 and PostGIS 3 from the pre-compiled binaries in the PostgreSQL repository, it would look like this:
 
 ```
 #!/bin/bash
@@ -52,7 +52,16 @@ So to configure a machine with R 4.0 installed as a binary from the CRAN reposit
 # get root location of sript
 GIS_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+### STEP 1: Cloud Configuration VM
+source "$GIS_UTILS_DIR/init/init_docean.sh"
 
+### STEP 2: Use apt-*.sh for precompiled binaries
+source "$GIS_UTILS_DIR/pg-11-postgis-3/apt-pg-11-postgis-3.sh"
+
+### STEP 3: Config Software
+source "$GIS_UTILS_DIR/pg-11-postgis-3/config-pg-11-postgis-3.sh"
+
+```
 
 
 
