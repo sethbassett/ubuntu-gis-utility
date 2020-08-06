@@ -170,7 +170,7 @@ cd -- "/$SRCPATH/${GEOSFILE%.tar.bz2}"
 
 echo "Compiling ${GEOSFILE%.tar.bz2}"
 ./configure 
-make -j $NJOBS > "$LOGPATH/geos.make.out" 2> "$LOGPATH/geos.make.err"
+make -j $NJOBS > "$LOGPATH/geos.make.stdout" 2> "$LOGPATH/geos.make.stderr"
 make check > "$LOGPATH/geos.check.stdout" 2> "$LOGPATH/geos.make.stderr"
 make install > "$LOGPATH/geos.install.stdout" 2> "$LOGPATH/geos.install.stderr"
 cd -- "$SRCPATH"
@@ -196,9 +196,9 @@ cd -- "/$SRCPATH/${PROJFILE%.tar.gz}"
 
 ./configure
 
-make -j $NJOBS > "$LOGPATH/proj.make.out" 2> "$LOGPATH/proj.make.err"
-make check > "$LOGPATH/proj.check.out" 2> "$LOGPATH/proj.check.err"
-make install > "$LOGPATH/proj.install.out" 2> "$LOGPATH/proj.install.err"
+make -j $NJOBS > "$LOGPATH/proj.make.stdout" 2> "$LOGPATH/proj.make.stderr"
+make check > "$LOGPATH/proj.check.stdout" 2> "$LOGPATH/proj.check.stderr"
+make install > "$LOGPATH/proj.install.stdout" 2> "$LOGPATH/proj.install.stderr"
 ##############################################################################
 ##############################################################################
 ##############################################################################
