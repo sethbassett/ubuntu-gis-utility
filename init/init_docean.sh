@@ -8,7 +8,7 @@
 ########################
 
 # Name of the user to create and grant sudo privileges
-USERNAME=seth
+USERNAME=gis
 
 # Whether to copy over the root user's `authorized_keys` file to the new sudo
 # user.
