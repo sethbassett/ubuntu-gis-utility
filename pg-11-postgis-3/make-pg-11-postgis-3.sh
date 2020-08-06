@@ -4,6 +4,7 @@
 
 echo "START make-pg-11-postgis-3"
 
+
 ##############################################################################
 ##### SOFTWARE SOURCES #######################################################
 ##############################################################################
@@ -36,6 +37,13 @@ POSTURL=https://download.osgeo.org/postgis/source
 ##############################################################################
 ##### CHECK ENVIORNMENT VARIABLES#############################################
 ##############################################################################
+
+# get root location of this script
+GIS_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# this checks to see if necessary environment variables have been set in the shell
+# if not, then it sets them
+
 [[ -z "$SRCPATH" ]] && \
   SRCPATH=/usr/local/scr || \
   echo "SRCPATH WAS ALREADY SET TO $SRCPATH"
@@ -48,10 +56,7 @@ chmod u+rwx "$SRCPATH"
   BUILDPATH=/usr/local || \
   echo "BUILDPATH WAS ALREADY SET TO $BUILDPATH"
 
-[[ -z "$LOGPATH" ]] && \
-  LOGPATH="$GIS_UTILS_DIR/sh_logs" || \
-  echo "LOGPATH WAS ALREADY SET TO $BUILDPATH"
-
+LOGPATH="$GIS_UTILS_DIR/shlogs"
 mkdir -- "$LOGPATH"
 
 [[ -z "$NJOBS" ]] && \
@@ -154,16 +159,20 @@ sudo -u postgres createuser -s root
 ##############################################################################
 #####  MAKE GEOS #############################################################
 ##############################################################################
+echo "Making ${GEOSFILE%.tar.bz2} FROM $GEOSURL" 
+
 cd -- "$SRCPATH"
 wget "$GEOSURL/$GEOSFILE"
 bzip2 -d geos-3.8.1.tar.bz2  
 tar -xf "/$SRCPATH/${GEOSFILE%.bz2}"
 
 cd -- "/$SRCPATH/${GEOSFILE%.tar.bz2}"
+
+echo "Compiling ${GEOSFILE%.tar.bz2}"
 ./configure 
-make -j $NJOBS | tee "$HOME/$LOGPATH/geos.make.log"
-make check | tee "$HOME/$LOGPATH/geos.check.log"
-make install | tee "$HOME/$LOGPATH/geos.install.log"
+make -j $NJOBS > "$LOGPATH/geos.make.out" 2> "$LOGPATH/geos.make.err"
+make check > "$LOGPATH/geos.check.stdout" 2> "$LOGPATH/geos.make.stderr"
+make install > "$LOGPATH/geos.install.stdout" 2> "$LOGPATH/geos.install.stderr"
 cd -- "$SRCPATH"
 ##############################################################################
 ##############################################################################
@@ -174,6 +183,8 @@ cd -- "$SRCPATH"
 ##############################################################################
 #####  MAKE PROJ  ############################################################
 ##############################################################################
+echo "Making ${PROJFILE%.tar.gz} from $PROJURL" 
+
 cd -- "$SRCPATH"
 
 wget "$PROJURL/$PROJFILE"
@@ -185,9 +196,9 @@ cd -- "/$SRCPATH/${PROJFILE%.tar.gz}"
 
 ./configure
 
-make -j $NJOBS | tee "$LOGPATH/proj.make.log"
-make check | tee "$LOGPATH/proj.check.log"
-make install | tee "$LOGPATH/proj.install.log"
+make -j $NJOBS > "$LOGPATH/proj.make.out" 2> "$LOGPATH/proj.make.err"
+make check > "$LOGPATH/proj.check.out" 2> "$LOGPATH/proj.check.err"
+make install > "$LOGPATH/proj.install.out" 2> "$LOGPATH/proj.install.err"
 ##############################################################################
 ##############################################################################
 ##############################################################################
