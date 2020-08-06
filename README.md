@@ -36,5 +36,26 @@ ubuntu-gis-utility/
 ```  
   
 # Customization  
+
+Pick and choose your scripts as needed and wrap them in your own shell script. The process chain is always  
+```  
+init.sh
+make.sh or apt.sh (but not both) 
+config.sh  
+```  
+
+So to configure a machine with R 4.0 installed as a binary from the CRAN repository, followed by Shiny-Server (but no PostgreSQL/PostGIS), it would look like this:
+
+```
+#!/bin/bash
+
+# get root location of sript
+GIS_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+
+
+
+
+
   
 
