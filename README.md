@@ -22,13 +22,13 @@ source ubuntu-gis-utility/example.sh
 
 Build time of example.sh on 2020-08-05 was 94m46.688s on a 4 core droplet.
 
-# WARNING  
+# WARNING!
 
-The config script for PostGIS (port 5432) leaves the machine open to all connections. The Shiny-Server config moves the Shiny-Server port to the standard HTTP port (port 80) and leaves the machines wide open to all connections.
+The config script for PostgreSQL/PostGIS alters the pg_hba.conf file to accept all incoming connections, modifies the postgresql.conf file to listen for all incoming connections, and uses UFW to open port 5432 to all connections. The Shiny-Server config-r-shiny.sh script alters the Shiny-Server.conf file to change to Shiny-Server port to the standard HTTP port (port 80) and uses UFW to open port 80 to all connections. 
 
-**THIS IS BY DESIGN** This policy works well with AWS and Azure, where your network security will be handled at a higher level via the VPC (AWS) or APC (Azure) tools. It works less well on Digital Ocean, who only gives you the option to limit networking to machines within their data center; they expect you to know enough to handle your own security policies at the systems level.  
-
-Either way, you should modify the ```UFW Allow``` 
+**THIS LEAVES YOUR VM WITH NO NETWORKING SECURITY POLICY AND IT IS BY DESIGN** This policy works well with AWS and Azure, where your network security will be handled at a higher level via the VPC (AWS) or APC (Azure) tools.  
+ 
+It works less well on Digital Ocean, who only gives you the option to limit networking to machines within their data center; Digital Ocean expects you to handle your network security at the systems level. If you are deploying on digital ocean, you should modify the ```ufw allow (PORT)``` commands in the relevant config-*.sh scripts to read something like ```ufw allow (PORT) from xx.xx.xx.xx```, where xx.xx.xx.xx is the IP address or address range you want to allow to connect to your VM. 
  
 # Contents  
 ```  
@@ -44,19 +44,18 @@ ubuntu-gis-utility/
   
 # Customization  
 
-Pick and choose your scripts as needed and wrap them in your own shell script. The process chain is always  
-```  
-init.sh
-make.sh or apt.sh (but not both) 
-config.sh  
-```  
-
-So to configure a machine with PostgreSQL 11 and PostGIS 3 from the pre-compiled binaries in the PostgreSQL repository, it would look like this:
+Customization is fairly straight forward. Pick and choose your scripts as needed and wrap them in your own bash script. The process chain for each piece of software is always the same:  
+  1. source the init-*.sh for your cloud provider  
+  2. source one of make-*.sh or apt-*.sh (but not both) for the software you want  
+  3. source config-*.sh for the software you want  
+  4. source any optional scripts you want  
+  
+So to configure a machine with PostgreSQL 11 and PostGIS 3 from the pre-compiled binaries in the PostgreSQL repository, you would create a bash script like this: 
 
 ```
 #!/bin/bash
 
-# get root location of sript
+# get location of script
 GIS_UTILS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ### STEP 1: Cloud Configuration VM

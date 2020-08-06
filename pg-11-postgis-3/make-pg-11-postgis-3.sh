@@ -126,6 +126,9 @@ apt install -y \
   libarmadillo9 libpython3.8 libopenexr24 libheif1 \
   python-is-python3
   
+# jason-c compile time dependencies
+apt install -y libjson-c-dev
+
 # POSTGIS compile time dependencies
 apt install -y \
   xsltproc xmlto
@@ -222,6 +225,7 @@ make install > "$LOGPATH/proj.install.stdout" 2> "$LOGPATH/proj.install.stderr"
 # GDAL Docker Page
 # https://github.com/OSGeo/gdal/tree/master/gdal/docker
 ##############################################################################
+echo "Making ${GDALFILE%.tar.gz} from $GDALURL" 
 cd -- "$SRCPATH"
 wget "$GDALURL/$GDALFILE"
 tar -xzvf "$SRCPATH/$GDALFILE"
@@ -244,9 +248,9 @@ source ~/.bash_profile
 ##############################################################################
 #####  MAKE JSON-C  #########################################################
 ##############################################################################
+echo "Making json-c from https://github.com/json-c/json-c.git" 
 cd -- "/$SRCPATH"
 
-apt install -y libjson-c-dev
 git clone https://github.com/json-c/json-c.git
 
 mkdir json-c-build
@@ -254,9 +258,9 @@ cd -- "json-c-build"
 
 cmake ../json-c   # See CMake section below for custom arguments
 
-make -j $NJOBS | tee "$LOGPATH/json-c.make.log"
-make check | tee "$LOGPATH/json-c.check.log"
-make install | tee "$LOGPATH/json-c.install.log"
+make -j $NJOBS > "$LOGPATH/json-c.make.stdout" 2> "$LOGPATH/json-c.make.stderr"
+make check > "$LOGPATH/json-c.check.stdout" 2> "$LOGPATH/json-c.check.stderr"
+make install > "$LOGPATH/json-c.install.stdout" 2> "$LOGPATH/json-c.install.stderr"
 ##############################################################################
 ##############################################################################
 ##############################################################################
@@ -266,6 +270,8 @@ make install | tee "$LOGPATH/json-c.install.log"
 ##############################################################################
 #####  MAKE POSTGIS  #########################################################
 ##############################################################################
+echo "Making ${POSTFILE%.tar.gz} from $POSTURL"
+
 cd -- "/$SRCPATH"
 wget "$POSTURL/$POSTFILE" -O "/$SRCPATH/$POSTFILE"
 tar -xzvf "/$SRCPATH/$POSTFILE"
@@ -275,9 +281,9 @@ LDFLAGS=-lstdc++ ./configure \
    --with-raster \
    --with-gdalconfig=/usr/local/bin/gdal-config
 
-make -j $NJOBS | tee "$LOGPATH/postgis.make.log"
-make check | tee "$LOGPATH/postgis.check.log"
-make install | tee "$LOGPATH/postgis.install.log"
+make -j $NJOBS > "$LOGPATH/postgis.make.stdout" 2> "$LOGPATH/postgis.make.stderr"
+make check > "$LOGPATH/postgis.check.stdout" 2> "$LOGPATH/postgis.check.stderr"
+make install > "$LOGPATH/postgis.install.stdout" 2> "$LOGPATH/postgis.install.stderr"
 cd -- "$SRCPATH"
 
 #OGR_FDW Support
