@@ -155,8 +155,12 @@ apt install -y \
 #####  INSTALL POSTGRESQL ####################################################
 ##############################################################################
 # ADD APT REPOSITORY
-echo "Installing Postgresql 11..."
+echo "Installing PostgreSQL 11..."
+
+echo "Adding PostgreSQL Repository"
 sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main" >> /etc/apt/sources.list'
+
+echo "Adding PostgreSQL repository encryption key"
 wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
 
 apt update  > /dev/null 2>&1
@@ -186,6 +190,7 @@ sudo -u postgres createuser -s root
 echo "Making ${GEOSFILE%.tar.bz2} FROM $GEOSURL" 
 
 cd -- "$SRCPATH"
+
 wget "$GEOSURL/$GEOSFILE" > /dev/null 2>&1
 bzip2 -d geos-3.8.1.tar.bz2  > /dev/null 2>&1
 tar -xf "/$SRCPATH/${GEOSFILE%.bz2}" > /dev/null 2>&1

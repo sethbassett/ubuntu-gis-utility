@@ -48,18 +48,42 @@ Note that if you compile GDAL and GEOS from source and plan on using R's *sf* pa
 
 # WARNING!
 
-The config-pg-11-postgis-3.sh script for PostgreSQL/PostGIS alters the pg_hba.conf file to accept all incoming connections, modifies the postgresql.conf file to listen for all incoming connections, and uses UFW to open port 5432 to all connections.  
+**BY DESIGN, AN INSTANCE CONFIGURED WITH THESE SCRIPTS WILL ACCEPT ALL INCOMING CONNECTIONS ON PORTS 22, 873 AND ON ANY OF THE RELEVANT PORTS USED BY THE SOFTWARE YOU INSTALL. TRAFFIC TO ALL OTHER PORTS WILL BE REJECTED**  
 
-The config-r-shiny.sh script for Shiny-Server alters the Shiny-Server.conf file and changes the Shiny-Server port to the standard HTTP port (port 80) and uses UFW to open port 80 to all connections.  
-
-**THIS MEANS YOUR VM WILL ACCEPT ALL INCOMING CONNECTIONS ON THE RELEVANT PORTS (5432 & 80) BY DESIGN**  
+This is very much a compromise solution that is sandwiched between 'best practices' and 'getting shit done in a way that won't bite you in the future.'
   
-This works well with AWS and Azure, where your network security policy should be set via AWS' Virtual Private Cloud (VPC) or Azure's Azure Private Cloud (APC) network security toolsets.  
- 
-If you are deploying to Digital Ocean, however, this policy is problematic. Digital Ocean expects you to handle your network security at the systems level and only only gives you the ability to limit connections to your machine to IP addresses within the same Digital Ocean data center.  
+Cloud based environments like AWS, Azure and Digital Ocean expect you to handle your network security policy via their own set of high level tools:  
+  + AWS' Virtual Private Cloud (VPC)  
+  + Azure's Azure Private Cloud (APC)  
+  + Or Digital Ocean's Virtual Private Cloud (VPC)  
+  
+Typically, you want to entirely disable local the security policy on your VM and manage your network security policy exclusively through these tools.  
 
-If you are deploying on digital ocean, you should modify the ```ufw allow (PORT)``` commands in the relevant config-*.sh scripts to read something like ```ufw allow (PORT) from xx.xx.xx.xx```, where xx.xx.xx.xx is the IP address or block you want to whitelist to connect to your VM. 
- 
+However, the whole idea behind this set of utilities is that they let you skip the linux and networking background and jump straight into deploying working FOSS-GIS software in the cloud. The idea that someone might jump in and start spinning up VMs with *no* security gives me hives.  
+
+The compromise solution is to assume the average GIS professional knows nothing about managing network security policy. The default security policy that I implemented is to enable UFW and open ports 22 and 873 so you can use ssh and rsync right off the bat. All other ports are only whitelisted when you call the relevant config-\*.sh script after installing a particular piece of software.  
+  
+This is a reasonably safe compromise for a novice user - not perfect, but at least the VM won't be accepting all incoming connections on all ports if you don't know how to set up a VPC/APC security policy.  
+
+If you do know how to use a VPC/APC security policy, then you simply need to add in ```ufw disable``` as the last bash command at the end of your wrapper script.  
+
+## How config-\*.sh scripts modify the network settings  
+
+The init-\*.sh set of scripts enables UFW on the host machine and sets the following policies:  
+  + enable port 22 (ssh) in UFW for all  
+  + enable port 873 (rsync) in UFW for all  
+  
+Additionally, each config-\*.sh script makes changes to the base networking configuration of the software it is installing and the UFW policy as follows:  
+  + config-pg-11-postgis-3.sh  
+    + copies the template postgresql.conf file which sets listen_address="*"  
+    + copies the template pg_hba.conf file, which accepts all incoming connections (0.0.0.0/0)  
+    + enables port 5432 (postgres) in UFW for all connections  
+  + config-r-shiny.sh  
+    + copies the template shiny-server.conf, which sets shiny to listen on port 80 (instead of the default 3838)  
+    + enables port 80 (http) in UFW for all connections  
+
+Note these settings are not 'best practices' - they are designed to get you up and running in a secure manner as quickly as possible. 
+
 # Customization  
 
 Customization is fairly straight forward. Pick and choose your scripts as needed and wrap them in your own bash script. The process chain is always the same:  
