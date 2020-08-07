@@ -51,9 +51,11 @@ Note that if you compile GDAL and GEOS from source and plan on using R's *sf* pa
 
 **BY DESIGN, AN INSTANCE CONFIGURED WITH THESE SCRIPTS WILL ACCEPT ALL INCOMING CONNECTIONS ON PORTS 22, 873 AND ON ANY OF THE RELEVANT PORTS USED BY THE SOFTWARE YOU INSTALL. TRAFFIC TO ALL OTHER PORTS WILL BE REJECTED**  
 
-This is very much a compromise solution that is sandwiched between 'best practices' and 'getting shit done in a way that won't bite a novice in the future.'
+This is a compromise solution that is sandwiched between best practices, modularity, and getting it done quickly and with minimum fuss so I can get on with doing GIS.  
   
-Cloud based environments like AWS, Azure and Digital Ocean expect you to handle your network security policy via their own set of high-level tools:  
+For the GIS users that might be tentatively exploring the outer reaches of computer geekery:  
+
+Cloud based environments like AWS, Azure and Digital Ocean expect you to handle your network security policy with their high-level network security tools:  
   + AWS' Virtual Private Cloud (VPC)  
   + Azure's Azure Private Cloud (APC)  
   + Or Digital Ocean's Virtual Private Cloud (VPC)  
