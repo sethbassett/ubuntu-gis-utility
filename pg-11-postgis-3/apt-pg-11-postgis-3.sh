@@ -4,7 +4,7 @@
 ##############################################################################
 # https://trac.osgeo.org/postgis/wiki/UsersWikiPostGIS24UbuntuPGSQL10Apt
 
-# ADD APT REPOSITORY
+# ADD PostgreSQL APT REPOSITORY
 sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main" >> /etc/apt/sources.list'
 wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
 
@@ -27,6 +27,23 @@ apt install -y \
 
 
 sudo -u postgres createuser --superuser root
+##############################################################################
+##############################################################################
+##############################################################################
+
+##############################################################################
+#####  INSTALL GDAL PYTHON BINDINGS###########################################
+##############################################################################
+apt install -y libgdal-dev python3.6-dev python3-pip
+pip3 install --upgrade pip
+
+
+export CPLUS_INCLUDE_PATH=/usr/include/gdal
+export C_INCLUDE_PATH=/usr/include/gdal
+GDAL_VERSION="$(ogrinfo --version | grep -oP '(?<=GDAL.)([0-9]\.[0-9]\.[0-9])')"
+
+pip3 install GDAL==$GDAL_VERSION
+
 ##############################################################################
 ##############################################################################
 ##############################################################################

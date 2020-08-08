@@ -265,6 +265,20 @@ make install > "$LOGPATH/gdal.check.stdout" 2> "$LOGPATH/gdal.check.stderr"
 
 echo 'export GDAL_DATA=$BUILDPATH/share/gdal' >> ~/.bash_profile
 source ~/.bash_profile
+
+###### Install python 3 bindings
+# Dependencies
+apt install -y python3.6-dev python3-pip libgdal-dev
+pip3 install --upgrade pip
+
+# Necessary
+export CPLUS_INCLUDE_PATH="$BUILDPATH/share/gdal/"
+export C_INCLUDE_PATH="$BUILDPATH/share/gdal/"
+
+# pull installed version
+GDAL_VERSION="$(ogrinfo --version | grep -oP '(?<=GDAL.)([0-9]\.[0-9]\.[0-9])')"
+
+pip3 install GDAL==$GDAL_VERSION
 ##############################################################################
 ##############################################################################
 ##############################################################################
