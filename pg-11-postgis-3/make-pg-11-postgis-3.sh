@@ -286,7 +286,7 @@ export C_INCLUDE_PATH="$BUILDPATH/share/gdal/"
 # pull installed version
 GDAL_VERSION="$(ogrinfo --version | grep -oP '(?<=GDAL.)([0-9]\.[0-9]\.[0-9])')"
 
-pip3 install GDAL==$GDAL_VERSION
+python3 -m pip install GDAL==$GDAL_VERSION
 ##############################################################################
 ##############################################################################
 ##############################################################################

@@ -34,8 +34,8 @@ sudo -u postgres createuser --superuser root
 ##############################################################################
 #####  INSTALL GDAL PYTHON BINDINGS###########################################
 ##############################################################################
-apt install -y libgdal-dev python3.6-dev python3-pip
-pip3 install --upgrade pip
+apt install -y gdal-bin libgdal-dev python3.6-dev python3-pip
+python3 -m pip install --upgrade pip
 
 
 export CPLUS_INCLUDE_PATH=/usr/include/gdal
@@ -47,6 +47,12 @@ pip3 install GDAL==$GDAL_VERSION
 ##############################################################################
 ##############################################################################
 ##############################################################################
+
+##############################################################################
+#####  INSTALL psycopg2  #####################################################
+##############################################################################
+python3 -m pip install psycopg2
+
 
 apt install -y postgresql-plpython3-11
 
