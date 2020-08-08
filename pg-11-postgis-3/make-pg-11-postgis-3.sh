@@ -149,6 +149,8 @@ echo "Installing PostGIS dependencies..."
 # POSTGIS compile time dependencies
 apt install -y \
   xsltproc xmlto >> "$LOGPATH/apt.log" 2>&1
+  
+
 
 ##############################################################################
 ##############################################################################
@@ -270,10 +272,12 @@ make install > "$LOGPATH/gdal.check.stdout" 2> "$LOGPATH/gdal.check.stderr"
 echo 'export GDAL_DATA=$BUILDPATH/share/gdal' >> ~/.bash_profile
 source ~/.bash_profile
 
+
+echo "Installing Python dependencies..."
 ###### Install python 3 bindings
 # Dependencies
-apt install -y python3.6-dev python3-pip libgdal-dev
-pip3 install --upgrade pip
+apt install -y python3.6-dev python3-pip libgdal-dev >> "$LOGPATH/apt.log" 2>&1
+pip3 install --upgrade pip  > "$LOGPATH/pip.log" 2>&1
 
 # Necessary
 export CPLUS_INCLUDE_PATH="$BUILDPATH/share/gdal/"
@@ -333,7 +337,11 @@ make install > "$LOGPATH/postgis.install.stdout" 2> "$LOGPATH/postgis.install.st
 cd -- "$SRCPATH"
 
 #OGR_FDW Support
+echo "Installing ogr_fdw Extension"
 apt install -y postgresql-11-ogr-fdw >> "$LOGPATH/apt.log" 2>&1
+
+echo "Installing plpython3 extension"
+apt install -y postgresql-plpython3-11 >> "$LOGPATH/apt.log" 2>&1
 ##############################################################################
 ##############################################################################
 ##############################################################################
