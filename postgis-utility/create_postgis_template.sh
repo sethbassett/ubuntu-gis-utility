@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 ##### Defaults ###############################################
 DATABASE=postgis_template
 TOPOLOGY=1
@@ -11,6 +12,7 @@ ADDSTD=1
 ##############################################################
 
 ##### Args ###################################################
+OPTIND=1
 while getopts dtraogz option
 do
   case "${option}"
@@ -22,10 +24,24 @@ do
     o) OGRFDW=0;;
     g) TIGER=0;;
     z) ADDSTD=0;;
+    *) help; exit 2;;
+    ?) help; exit 2;;
 esac
 done
 ##############################################################	
 
+help() {
+  cat <<- EOF 
+Creates a PostGIS enabled database. Using a flag disables creation of the extension
+  -d | database name
+  -t | disable postgis_topology extension
+  -r | disable postgis_raster extension
+  -a | disable Pierre Racine raster addons
+  -o | disable ogr_fdw extension 
+  -g | disable fuzzystrmatch and postgis_tiger_geocoder extensions
+  -z | disable address_standardizer extension 
+EOF
+  }
 
 ##### Main Code ##############################################
 psql postgres -c "CREATE DATABASE $DATABASE WITH OWNER postgres;" 

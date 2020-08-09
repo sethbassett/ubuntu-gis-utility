@@ -1,18 +1,7 @@
 #!/bin/bash
 
-# Set up logging
+
 GIS_UTIL_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-THISFILE=${0##*/}
-
-
-LOGFILE="${THISFILE%.sh}.log"
-ERRFILE="${THISFILE%.sh}.err"
-LOGPATH="${0%/*}/shlogs"
-mkdir $LOGPATH
-
-exec 3>&1 4>&2
-trap 'exec 2>&4 1>&3' 0 1 2 3
-exec 1>"$LOGPATH/$LOGFILE" 2>&1
 
 ##############################################################################
 #####  INSTALL POSTGRESQL ####################################################
@@ -37,6 +26,8 @@ apt install -y \
   postgresql-11-postgis-3 \
   postgresql-11-postgis-3-scripts \
   postgresql-11-pgrouting
+  
+# ogrfdw
 apt install -y \
  postgresql-11-ogr-fdw
 
