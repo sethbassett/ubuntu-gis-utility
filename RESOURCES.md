@@ -36,8 +36,6 @@
   + [Docker Files](https://github.com/OSGeo/gdal/tree/master/gdal/docker)  
   + [ogr2ogr Cheat Sheet](https://www.bostongis.com/PrinterFriendly.aspx?content_name=ogr_cheatsheet)  
   + [GDAL OGR for data loading](http://www.postgresonline.com/journal/index.php?/archives/31-GDALOGR2OGR-for-Data-Loading.html)  
-  
-  
 
 ## Python Bindings  
   + [Python GDAL Bindings Automatic Docs](https://gdal.org/python/)  

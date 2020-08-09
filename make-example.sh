@@ -19,7 +19,7 @@ BUILDPATH=/usr/local
 NJOBS=4
 
 # Name of directory for logs, built on $HOME/$LOGPATH/file.log
-LOGPATH="$GIS_UTILS_DIR/sh_logs"
+LOGPATH="$GIS_UTILS_DIR/shlogs"
 mkdir -- "$LOGPATH"
 ##############################################################################
 ##############################################################################
