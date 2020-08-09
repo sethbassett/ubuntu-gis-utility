@@ -24,8 +24,7 @@ do
     o) OGRFDW=0;;
     g) TIGER=0;;
     z) ADDSTD=0;;
-    *) help; exit 2;;
-    ?) help; exit 2;;
+    ?) help;;
 esac
 done
 ##############################################################	
