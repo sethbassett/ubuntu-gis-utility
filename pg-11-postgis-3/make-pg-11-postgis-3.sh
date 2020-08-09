@@ -339,6 +339,9 @@ cd -- "$SRCPATH"
 #OGR_FDW Support
 echo "Installing ogr_fdw Extension"
 apt install -y postgresql-11-ogr-fdw >> "$LOGPATH/apt.log" 2>&1
+echo 'export PATH=/usr/lib/postgresql/11/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
 
 echo "Installing plpython3 extension"
 apt install -y postgresql-plpython3-11 >> "$LOGPATH/apt.log" 2>&1
