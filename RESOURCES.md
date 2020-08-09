@@ -34,8 +34,14 @@
   + [Vector Drivers](https://gdal.org/drivers/vector/index.html)  
   + [github repository](https://github.com/OSGeo/GDAL)  
   + [Docker Files](https://github.com/OSGeo/gdal/tree/master/gdal/docker)  
+  + [ogr2ogr Cheat Sheet](https://www.bostongis.com/PrinterFriendly.aspx?content_name=ogr_cheatsheet)  
+  + [GDAL OGR for data loading](http://www.postgresonline.com/journal/index.php?/archives/31-GDALOGR2OGR-for-Data-Loading.html)  
+  
   
 
-## Python Bindings
+## Python Bindings  
+  + [Python GDAL Bindings Automatic Docs](https://gdal.org/python/)  
   + [Installing GDAL with Python 3 Bindings](https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)  
   + [Python GDAL/OGR Cookbook 1.0 Documentation](https://pcjericks.github.io/py-gdalogr-cookbook/vector_layers.html)  
+  + [Python: Reading and Writing Vector Data with OGR](https://www.gis.usu.edu/~chrisg/python/2009/lectures/ospy_slides1.pdf)  
+  
