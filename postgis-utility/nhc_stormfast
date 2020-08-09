@@ -1,0 +1,31 @@
+#!/bin/bash
+
+
+
+mapServer="https://idpgis.ncep.noaa.gov/arcgis/rest/services/NWS_Forecasts_Guidance_Warnings/NHC_Atl_trop_cyclones/MapServer"
+nLayers=`curl -s "$mapServer?f=pjson" | jq '.layers | length'` - 1
+
+schema="mirror"
+prefix="nhc"
+
+psql -d gis -c "DROP SCHEMA IF EXISTS $schema CASCADE;"
+psql -d gis -c "CREATE SCHEMA $schema"
+
+for ((i = 0; i < $nLayers; i++));
+do
+  layerName=`curl -s "$mapServer/$i?f=json" | jq ".name" | sed 's/"//g' | sed 's/ /_/g'`
+  urlService="$mapServer/$i/query?where=objectid+%3D+objectid&outfields=*&f=json"
+  prefixed="${prefix}_${layerName}"
+  echo $prefixed
+  ogr2ogr \
+    -s_srs EPSG:4269 \
+    -t_srs EPSG:4326 \
+    -f PostgreSQL "PG:dbname=gis ACTIVE_SCHEMA=$schema" "$urlService" \
+    -nln "$prefixed" \
+    -lco "LAUNDER=YES" \
+    -nlt "PROMOTE_TO_MULTI" \
+    -makevalid
+
+done
+
+

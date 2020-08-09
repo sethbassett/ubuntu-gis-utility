@@ -25,6 +25,8 @@ apt install -y \
 apt install -y \
  postgresql-11-ogr-fdw
 
+echo 'export PATH=/usr/lib/postgresql/11/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
 
 sudo -u postgres createuser --superuser root
 ##############################################################################
